@@ -1,0 +1,44 @@
+:root {
+    /* Brand Colors - Masterpiece Palette */
+    --color-primary: #0F172A;
+    /* Deep Slate Navy (High-end tech) */
+    --color-primary-rgb: 15, 23, 42;
+    --color-secondary: #4F46E5;
+    /* Vibrant Indigo (Fiverr/Shopify style) */
+    --color-secondary-rgb: 79, 70, 229;
+    --color-accent: #F59E0B;
+    /* Warm Amber/Gold */
+    --color-accent-rgb: 245, 158, 11;
+    --color-pink: #EC4899;
+    /* Vibrant Pink */
+    --color-vellon: #7C3AED;
+    /* Modern Violet (Vellon Purple) */
+
+    /* Backgrounds */
+    --bg-main: #FFFFFF;
+    /* Pure White for Shopify Cleanliness */
+    --bg-soft: #F8FAFC;
+    /* Soft Slate */
+    --bg-dark: #020617;
+    /* Deep Dark */
+
+    /* Typography */
+    --font-heading: 'Plus Jakarta Sans', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+
+    /* Modern Grid & Borders */
+    --border-subtle: 1px solid rgba(15, 23, 42, 0.08);
+    --border-visible: 1px solid #E2E8F0;
+
+    /* Layered Shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+
+    /* Radius */
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --radius-full: 9999px;
+}

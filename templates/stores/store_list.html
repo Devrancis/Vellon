@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Verified Creator Merchants - Vellon.{% endblock %}
+
+{% block content %}
+<div class="bg-dark text-white py-5">
+    <div class="container py-5 text-center">
+        <h1 class="display-3 fw-black mb-4">Support Creator <span class="text-indigo">Brands.</span></h1>
+        <p class="lead opacity-50 fw-medium mx-auto" style="max-width: 700px;">Direct from the dorms to your desk. Meet
+            the verified entrepreneurs building Vellon's economy.</p>
+    </div>
+</div>
+
+<div class="container py-5 mt-5 mb-5">
+    <div class="grid-container">
+        {% for store in stores %}
+        <div class="grid-item p-0">
+            <div class="m-card border-0 h-100 p-5 text-center bg-white hover-bg-soft transition-all">
+                <div class="bg-dark rounded-circle mx-auto mb-4 d-flex align-items-center justify-content-center border border-white border-4 shadow-lg overflow-hidden"
+                    style="width: 140px; height: 140px;">
+                    {% if store.logo %}
+                    <img src="{{ store.logo.url }}" class="img-fluid" alt="{{ store.name }}">
+                    {% else %}
+                    <span class="fs-1 fw-black text-white">{{ store.name|slice:":1"|upper }}</span>
+                    {% endif %}
+                </div>
+
+                <h3 class="fw-black text-primary mb-2 tracking-tight">{{ store.name }}</h3>
+                <div class="d-flex justify-content-center gap-3 mb-4">
+                    <span class="small fw-bold opacity-50"><i class="fas fa-star text-accent me-1"></i> 5.0
+                        Rating</span>
+                    <span class="small fw-bold opacity-50"><i class="fas fa-shopping-bag text-indigo me-1"></i> 100+
+                        Items</span>
+                </div>
+
+                <p class="text-secondary small mb-5 px-3 opacity-75 fw-medium line-height-relaxed">{{
+                    store.description|truncatewords:20 }}</p>
+
+                <div class="d-grid pt-2">
+                    <a href="/stores/{{ store.slug }}/"
+                        class="btn-master btn-master-primary py-3 justify-content-center">Go to Store Portal</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="grid-item col-12 py-5 text-center opacity-20">
+            <i class="fas fa-store-slash fa-4x mb-4"></i>
+            <h4 class="fw-black">Merchant Hub is growing.</h4>
+            <p>New stores arriving soon.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Recruitment Banner -->
+<section class="container py-5 mt-5">
+    <div
+        class="bg-indigo text-white p-5 rounded-0 border border-dark d-flex flex-column flex-lg-row align-items-center justify-content-between text-center text-lg-start gap-4 shadow-xl">
+        <div>
+            <h2 class="display-5 fw-black mb-2">Build your creative business.</h2>
+            <p class="opacity-75 mb-0 fw-medium">Join 500+ verified merchants already selling on Vellon.</p>
+        </div>
+        <a href="/stores/create/" class="btn-master btn-accent py-3 px-5 rounded-pill shadow-none h4 mb-0">Open Shop
+            Now</a>
+    </div>
+</section>
+
+<style>
+    .bg-indigo {
+        background: var(--color-secondary);
+    }
+</style>
+{% endblock %}

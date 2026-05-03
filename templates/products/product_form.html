@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }} - Vellon.{% endblock %}
+
+{% block content %}
+<div class="bg-soft border-bottom border-dark py-5">
+    <div class="container py-5">
+        <h1 class="display-4 fw-black text-primary mb-2">{{ title }} <span class="text-indigo">.</span></h1>
+        <p class="lead opacity-50 fw-medium">Broadcast your creative brand to the entire community.</p>
+    </div>
+</div>
+
+<div class="container py-5 mt-5 mb-5">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row g-5">
+            <div class="col-lg-8">
+                <div class="grid-container border-dark bg-white">
+                    <div class="grid-item">
+                        <h5 class="fw-black mb-4">Item Details</h5>
+                        <div class="row g-4">
+                            <div class="col-md-12">
+                                <label
+                                    class="x-small fw-black text-uppercase tracking-widest opacity-50 d-block mb-2">Product
+                                    Name</label>
+                                {{ form.name }}
+                            </div>
+                            <div class="col-md-6">
+                                <label
+                                    class="x-small fw-black text-uppercase tracking-widest opacity-50 d-block mb-2">Category</label>
+                                {{ form.category }}
+                            </div>
+                            <div class="col-md-6">
+                                <label
+                                    class="x-small fw-black text-uppercase tracking-widest opacity-50 d-block mb-2">Price
+                                    (₦)</label>
+                                {{ form.price }}
+                            </div>
+                            <div class="col-md-12">
+                                <label
+                                    class="x-small fw-black text-uppercase tracking-widest opacity-50 d-block mb-2">Description</label>
+                                {{ form.description }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid-item">
+                        <h5 class="fw-black mb-4">Inventory & Visibility</h5>
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label
+                                    class="x-small fw-black text-uppercase tracking-widest opacity-50 d-block mb-2">Stock
+                                    Available</label>
+                                {{ form.quantity_available }}
+                            </div>
+                            <div class="col-md-6 d-flex align-items-center mt-5">
+                                <div class="form-check form-switch custom-switch">
+                                    {{ form.track_inventory }}
+                                    <label class="fw-bold text-primary ms-3">Track Inventory Levels</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12 d-flex align-items-center">
+                                <div class="form-check form-switch custom-switch">
+                                    {{ form.is_active }}
+                                    <label class="fw-bold text-primary ms-3">Make Listing Publicly Visible</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="bg-dark text-white p-5 border border-dark sticky-top" style="top: 120px;">
+                    <h6 class="fw-black mb-4 small text-uppercase tracking-widest text-accent">Listing Actions</h6>
+
+                    <p class="small opacity-50 mb-5">Your listing will be instantly updated across the marketplace.
+                        High-quality descriptions lead to 40% more sales.</p>
+
+                    <button type="submit"
+                        class="btn-master btn-accent w-100 justify-content-center py-3 h5 mb-3 shadow-none">Save &
+                        Publish Listing</button>
+                    <a href="{% url 'seller_dashboard' %}"
+                        class="btn-master btn-master-outline w-100 justify-content-center py-3 text-white border-white border-opacity-20 shadow-none">Cancel
+                        & Exit</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+    .custom-switch .form-check-input {
+        width: 3em;
+        height: 1.5em;
+        cursor: pointer;
+    }
+
+    .custom-switch .form-check-input:checked {
+        background-color: var(--color-accent);
+        border-color: var(--color-accent);
+    }
+</style>
+{% endblock %}

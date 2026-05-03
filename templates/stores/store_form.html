@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Store Settings - {{ store.name }}{% endblock %}
+
+{% block content %}
+<div class="bg-soft border-bottom border-dark py-5">
+    <div class="container py-5">
+        <h1 class="display-4 fw-black text-primary mb-2">Store Settings <span class="text-indigo">.</span></h1>
+        <p class="lead opacity-50 fw-medium">Refine your merchant brand and contact channels.</p>
+    </div>
+</div>
+
+<div class="container py-5 mt-5 mb-5">
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row g-5">
+            <div class="col-lg-8">
+                <div class="grid-container border-dark bg-white">
+                    <div class="grid-item">
+                        <h5 class="fw-black mb-4">Brand Identity</h5>
+                        <div class="row g-4">
+                            <div class="col-md-12">
+                                <label
+                                    class="x-small fw-black text-uppercase tracking-widest opacity-50 d-block mb-2">Store
+                                    Name</label>
+                                {{ form.name }}
+                            </div>
+                            <div class="col-md-12">
+                                <label
+                                    class="x-small fw-black text-uppercase tracking-widest opacity-50 d-block mb-2">Description</label>
+                                {{ form.description }}
+                            </div>
+                            <div class="col-md-6">
+                                <label
+                                    class="x-small fw-black text-uppercase tracking-widest opacity-50 d-block mb-2">Store
+                                    Logo</label>
+                                {{ form.logo }}
+                            </div>
+                            <div class="col-md-6">
+                                <label
+                                    class="x-small fw-black text-uppercase tracking-widest opacity-50 d-block mb-2">Store
+                                    Banner</label>
+                                {{ form.banner }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid-item">
+                        <h5 class="fw-black mb-4">Contact & Support</h5>
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <label
+                                    class="x-small fw-black text-uppercase tracking-widest opacity-50 d-block mb-2">Phone
+                                    Number</label>
+                                {{ form.phone }}
+                            </div>
+                            <div class="col-md-6">
+                                <label
+                                    class="x-small fw-black text-uppercase tracking-widest opacity-50 d-block mb-2">WhatsApp
+                                    Number</label>
+                                {{ form.whatsapp }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="bg-dark text-white p-5 border border-dark sticky-top" style="top: 120px;">
+                    <h6 class="fw-black mb-4 small text-uppercase tracking-widest text-accent">Admin Actions</h6>
+
+                    <p class="small opacity-50 mb-5">Keep your contact information updated to ensure buyers can reach
+                        you easily at community hubs.</p>
+
+                    <button type="submit"
+                        class="btn-master btn-accent w-100 justify-content-center py-3 h5 mb-3 shadow-none">Save Store
+                        Config</button>
+                    <a href="{% url 'seller_dashboard' %}"
+                        class="btn-master btn-master-outline w-100 justify-content-center py-3 text-white border-white border-opacity-20 shadow-none">Back
+                        to Hub</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

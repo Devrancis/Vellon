@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load account socialaccount %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% trans "Join Vellon" %} - Marketplace Registration{% endblock %}
+
+{% block content %}
+<div class="section-padding bg-mesh" style="min-height: 90vh;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-7 col-md-10">
+                <div class="card-premium glass p-4 p-md-5 border-white border-2">
+                    <div class="text-center mb-5">
+                        <div class="badge-premium bg-accent text-primary mb-3 shadow-sm">ACCOUNT VERIFICATION REQUIRED
+                        </div>
+                        <h2 class="display-5 fw-black text-primary tracking-tight">Join the Marketplace</h2>
+                        <p class="text-secondary small fw-medium">Start shopping and selling within the Vellon community
+                        </p>
+                    </div>
+
+                    <p class="text-center small mb-5 fw-medium text-secondary">
+                        {% blocktrans %}Already a member? <a href="{{ login_url }}"
+                            class="fw-black text-primary hover-accent text-decoration-none">Sign in here</a>.{%
+                        endblocktrans %}
+                    </p>
+
+                    <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+                        {% csrf_token %}
+                        <div class="row g-4">
+                            <div class="col-12">
+                                {{ form|crispy }}
+                            </div>
+                        </div>
+
+                        {% if redirect_field_value %}
+                        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                        {% endif %}
+
+                        <div class="d-grid mt-5">
+                            <button class="btn btn-primary btn-lg rounded-pill py-3 fw-black shadow-heavy"
+                                type="submit">
+                                {% trans "Create My Account" %} <i class="fas fa-user-plus ms-2 small"></i>
+                            </button>
+                        </div>
+
+                        <p class="text-center x-small text-secondary mt-4 px-lg-5 opacity-75">
+                            By joining, you agree to the Vellon Creator Conduct and Campus Trading Policies.
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

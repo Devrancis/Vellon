@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Order Hub - Vellon.{% endblock %}
+
+{% block content %}
+<div class="bg-soft border-bottom border-dark py-5">
+    <div class="container py-5">
+        <h1 class="display-4 fw-black text-primary mb-2">My Order Hub <span class="text-indigo">.</span></h1>
+        <p class="lead opacity-50 fw-medium">Track your community purchases and delivery status.</p>
+    </div>
+</div>
+
+<div class="container py-5 mt-5 mb-5">
+    <div class="grid-container border-dark">
+        {% for order in orders %}
+        <div class="grid-item p-lg-5">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-2">
+                    <span
+                        class="x-small fw-black text-secondary text-uppercase tracking-widest d-block mb-1">Status</span>
+                    <span
+                        class="badge {% if order.status == 'pending' %}bg-soft text-primary{% else %}bg-dark text-white{% endif %} border border-dark rounded-0 px-3 py-2 small fw-bold">
+                        {{ order.get_status_display|upper }}
+                    </span>
+                </div>
+                <div class="col-lg-4">
+                    <span
+                        class="x-small fw-black text-secondary text-uppercase tracking-widest d-block mb-1">Merchant</span>
+                    <h5 class="fw-black mb-0 text-primary">{{ order.store.name }}</h5>
+                </div>
+                <div class="col-lg-3">
+                    <span class="x-small fw-black text-secondary text-uppercase tracking-widest d-block mb-1">Placed
+                        On</span>
+                    <p class="fw-bold mb-0 small text-primary">{{ order.created_at|date:"M d, Y" }}</p>
+                </div>
+                <div class="col-lg-1">
+                    <span
+                        class="x-small fw-black text-secondary text-uppercase tracking-widest d-block mb-1">Total</span>
+                    <p class="fw-black mb-0 h6 text-primary">₦{{ order.total_amount|floatformat:0 }}</p>
+                </div>
+                <div class="col-lg-2 text-lg-end">
+                    <a href="{% url 'order_detail' order.pk %}"
+                        class="btn-master btn-master-outline py-2 px-4 shadow-none">Manage Order</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="grid-item py-5 text-center opacity-20 col-12">
+            <i class="fas fa-shopping-bag fa-4x mb-4"></i>
+            <h4 class="fw-black">Your bag is light.</h4>
+            <p>You haven't placed any orders yet. <a href="/products/"
+                    class="text-primary text-decoration-none fw-bold">Start Shopping</a></p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

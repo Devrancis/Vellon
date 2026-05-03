@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} Detail - Vellon.{% endblock %}
+
+{% block content %}
+<div class="container py-5 mt-5">
+    <div class="row g-5">
+        <!-- Visuals -->
+        <div class="col-lg-7">
+            <div class="m-card border-dark border-2 p-2">
+                <div style="height: 600px; background: white;"
+                    class="d-flex align-items-center justify-content-center overflow-hidden position-relative">
+                    {% if product.images.all %}
+                    <img src="{{ product.images.first.image.url }}" class="w-100 h-100 object-fit-contain"
+                        id="main-image">
+                    {% else %}
+                    <i class="fas fa-image fa-6x opacity-10"></i>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row g-2 mt-2">
+                {% for img in product.images.all %}
+                <div class="col-2">
+                    <div class="m-card border-dark cursor-pointer overflow-hidden"
+                        onclick="document.getElementById('main-image').src='{{ img.image.url }}'">
+                        <img src="{{ img.image.url }}" class="w-100 h-100 object-fit-cover" style="height: 80px;">
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Buy Interaction -->
+        <div class="col-lg-5 ps-lg-5">
+            <div class="mb-5 pb-5 border-bottom border-dark">
+                <p class="fw-black text-secondary x-small text-uppercase tracking-widest mb-3">{{ product.category_name
+                    }} <i class="fas fa-chevron-right mx-2 x-small"></i> FM-{{ product.id }}</p>
+                <h1 class="display-4 fw-black text-primary mb-4">{{ product.name }}</h1>
+
+                <div class="d-flex align-items-baseline gap-3 mb-5">
+                    <span class="display-5 fw-black text-primary">₦{{ product.price|floatformat:0 }}</span>
+                    <span class="text-secondary opacity-50 fw-bold small">Direct Campus Pickup</span>
+                </div>
+
+                <div class="d-grid gap-3 mb-5">
+                    <button class="btn-master btn-master-primary py-4 justify-content-center h4 mb-0"
+                        onclick="Cart.add({id: {{ product.id }}, name: '{{ product.name }}', price: {{ product.price }}})">
+                        Add to Shopping Bag <i class="fas fa-shopping-bag ms-3"></i>
+                    </button>
+                    <a href="{% url 'start_conversation' product.id %}"
+                        class="btn-master btn-master-outline py-4 justify-content-center fw-black">Message Seller
+                        Directly</a>
+                </div>
+
+                <p class="small text-secondary fw-medium line-height-relaxed">{{ product.description }}</p>
+            </div>
+
+            <!-- Seller Snapshot -->
+            <div class="bg-soft p-5 border border-dark">
+                <div class="d-flex align-items-center mb-4">
+                    <div class="bg-dark rounded-circle me-4 flex-shrink-0 d-flex align-items-center justify-content-center text-white fw-black"
+                        style="width: 60px; height: 60px;">
+                        {{ product.store.name|slice:":1"|upper }}
+                    </div>
+                    <div>
+                        <h5 class="fw-black mb-1">{{ product.store_name }}</h5>
+                        <p class="mb-0 x-small fw-bold text-success text-uppercase tracking-widest"><i
+                                class="fas fa-check-circle me-1"></i> Vellon Verified Merchant</p>
+                    </div>
+                </div>
+                <div class="d-grid pt-2">
+                    <a href="/stores/{{ product.store.slug }}/"
+                        class="btn-master btn-master-outline py-2 justify-content-center small">View Complete Merchant
+                        Profile</a>
+                </div>
+            </div>
+
+            <div class="mt-5 d-flex gap-5 opacity-50">
+                <div class="text-center">
+                    <i class="fas fa-shield-alt fa-2x mb-2"></i>
+                    <p class="x-small fw-bold mb-0">Protector Plan</p>
+                </div>
+                <div class="text-center">
+                    <i class="fas fa-truck-fast fa-2x mb-2"></i>
+                    <p class="x-small fw-bold mb-0">Express Pickup</p>
+                </div>
+                <div class="text-center">
+                    <i class="fas fa-handshake fa-2x mb-2"></i>
+                    <p class="x-small fw-bold mb-0">Safe Exchange</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

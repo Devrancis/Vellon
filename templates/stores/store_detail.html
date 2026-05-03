@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ store.name }} - Merchant Profile | Vellon.{% endblock %}
+
+{% block content %}
+<div class="border-bottom border-dark">
+    <div class="container-fluid px-0">
+        <div class="row g-0">
+            <!-- Left Side: Merchant Info -->
+            <div class="col-lg-4 bg-soft border-end border-dark p-5 pt-lg-5" style="min-height: 80vh;">
+                <div class="sticky-top" style="top: 120px;">
+                    <div
+                        class="bg-dark rounded-0 d-inline-block px-3 py-1 mb-4 text-white small fw-black tracking-widest">
+                        VERIFIED MERCHANT</div>
+                    <h1 class="display-3 fw-black text-primary mb-4">{{ store.name }} <span class="text-indigo">.</span>
+                    </h1>
+                    <p class="text-secondary lead mb-5 opacity-75 fw-medium">{{ store.description }}</p>
+
+                    <div class="d-grid gap-3 mb-5">
+                        <a href="https://wa.me/{{ store.whatsapp }}"
+                            class="btn-master btn-master-primary py-3 justify-content-center">Secure Chat with
+                            Merchant</a>
+                        <button class="btn-master btn-master-outline py-3 justify-content-center">Copy Profile
+                            Link</button>
+                    </div>
+
+                    <div class="row g-4 mt-5 border-top border-dark pt-5">
+                        <div class="col-6">
+                            <h6 class="fw-black text-primary x-small text-uppercase tracking-widest opacity-50 mb-2">
+                                Sales Score</h6>
+                            <h4 class="fw-black mb-0">A+</h4>
+                        </div>
+                        <div class="col-6">
+                            <h6 class="fw-black text-primary x-small text-uppercase tracking-widest opacity-50 mb-2">
+                                Trust Rating</h6>
+                            <h4 class="fw-black mb-0">4.9⭐</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Side: Inventory Grid -->
+            <div class="col-lg-8 bg-white p-5">
+                <div class="section-header d-flex justify-content-between align-items-end mb-5">
+                    <div>
+                        <h2 class="display-5 fw-black">Store Inventory.</h2>
+                        <p class="text-secondary opacity-75 fw-medium">Available for immediate community pickup.</p>
+                    </div>
+                    <p class="small fw-bold opacity-30">{{ store.products.count }} Items</p>
+                </div>
+
+                <div class="row g-4">
+                    {% for product in store.products.all %}
+                    <div class="col-md-6 col-xl-4">
+                        <div class="m-card h-100">
+                            <div class="m-card-img-wrapper">
+                                {% if product.images.all %}
+                                <img src="{{ product.images.first.image.url }}" class="m-card-img"
+                                    alt="{{ product.name }}">
+                                {% else %}
+                                <div
+                                    class="w-100 h-100 d-flex align-items-center justify-content-center opacity-10 font-black fs-1">
+                                    BOX</div>
+                                {% endif %}
+                                <div
+                                    class="position-absolute bottom-0 start-0 m-3 px-3 py-1 bg-white border border-dark text-primary small fw-black shadow-sm">
+                                    ₦{{ product.price|floatformat:0 }}
+                                </div>
+                            </div>
+                            <div class="m-card-body">
+                                <h6 class="fw-bold mb-4 text-primary"
+                                    style="min-height: 44px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                                    {{ product.name }}</h6>
+                                <a href="/products/{{ product.slug }}/"
+                                    class="btn-master btn-master-outline w-100 justify-content-center py-2 x-small">Explore
+                                    Specification</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="col-12 py-5 text-center opacity-10">
+                        <i class="fas fa-box-open fa-6x mb-4"></i>
+                        <h2 class="fw-black">Restocking in progress.</h2>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

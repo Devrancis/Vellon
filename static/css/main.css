@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+body {
+    background-color: var(--bg-main);
+    color: var(--color-primary);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--font-heading);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+}
+
+/* Masterpiece Visible Grid Layout */
+.grid-container {
+    display: grid;
+    border-top: var(--border-visible);
+    border-left: var(--border-visible);
+}
+
+.grid-item {
+    border-right: var(--border-visible);
+    border-bottom: var(--border-visible);
+    padding: 40px;
+    transition: background-color 0.3s ease;
+}
+
+.grid-item:hover {
+    background-color: var(--bg-soft);
+}
+
+/* Modern Sections */
+.section-header {
+    margin-bottom: 60px;
+}
+
+.text-indigo {
+    color: var(--color-secondary);
+}
+
+.text-gold {
+    color: var(--color-accent);
+}
+
+/* Animation Utils */
+.fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Scroll handling */
+.sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}

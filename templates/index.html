@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Masterpiece Hero Slider -->
+<div id="heroCarousel" class="carousel slide m-carousel carousel-fade" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active" data-bs-interval="5000">
+            <img src="{% static 'img/hero_1.png' %}" class="m-carousel-img" alt="Creator Entrepreneurship">
+            <div class="carousel-caption m-carousel-caption">
+                <h1 class="display-3 fw-bold text-white mb-4 slide-in-bottom"
+                    style="font-family: 'Outfit', sans-serif;">Launch your creative brand <br><span
+                        class="text-gold">across Vellon.</span></h1>
+                <div class="hero-search-container shadow-xl mt-5 fade-in">
+                    <i class="fas fa-search ms-3 opacity-30"></i>
+                    <input type="text" class="hero-search-input" placeholder='Try "Calculus Textbook"...' id="search1">
+                    <button class="btn-master btn-master-primary py-2 px-4">Search</button>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item" data-bs-interval="5000">
+            <img src="{% static 'img/hero_2.png' %}" class="m-carousel-img" alt="Campus Marketplace">
+            <div class="carousel-caption m-carousel-caption">
+                <h1 class="display-3 fw-bold text-white mb-4" style="font-family: 'Outfit', sans-serif;">Discover the
+                    best community <br><span class="text-indigo">deals daily.</span></h1>
+                <div class="hero-search-container shadow-xl mt-5 fade-in">
+                    <i class="fas fa-search ms-3 opacity-30"></i>
+                    <input type="text" class="hero-search-input" placeholder='Search Vellon...' id="search2">
+                    <button class="btn-master btn-master-primary py-2 px-4">Find Deals</button>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item" data-bs-interval="5000">
+            <img src="{% static 'img/hero_3.png' %}" class="m-carousel-img" alt="Tech Gadgets">
+            <div class="carousel-caption m-carousel-caption">
+                <h1 class="display-3 fw-bold text-white mb-4" style="font-family: 'Outfit', sans-serif;">Access premium
+                    tech <br>from fellow creators.</h1>
+                <div class="hero-search-container shadow-xl mt-5 fade-in">
+                    <i class="fas fa-search ms-3 opacity-30"></i>
+                    <input type="text" class="hero-search-input" placeholder='Laptops, Smartphones...' id="search3">
+                    <button class="btn-master btn-master-primary py-2 px-4">Shop Tech</button>
+                </div>
+            </div>
+        </div>
+        <div class="carousel-item" data-bs-interval="5000">
+            <img src="{% static 'img/hero_4.png' %}" class="m-carousel-img" alt="Safe Exchange"
+                style="filter: brightness(0.7);">
+            <div class="carousel-caption m-carousel-caption">
+                <h1 class="display-3 fw-bold text-white mb-4" style="font-family: 'Outfit', sans-serif;">Secure,
+                    on-community <br><span class="text-accent">exchanges guaranteed.</span></h1>
+                <div class="hero-search-container shadow-xl mt-5 fade-in">
+                    <i class="fas fa-search ms-3 opacity-30"></i>
+                    <input type="text" class="hero-search-input" placeholder='Safe Trading...' id="search4">
+                    <button class="btn-master btn-master-primary py-2 px-4">Get Started</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="position-absolute bottom-0 start-50 translate-middle-x mb-5 text-white text-center opacity-50 fade-in"
+        style="animation-delay: 1s;">
+        <i class="fas fa-chevron-down bounce fs-4"></i>
+    </div>
+</div>
+
+<!-- Shopify-Style Category Grid (Visible Borders) -->
+<section class="bg-white">
+    <div class="container-fluid px-0">
+        <div class="grid-container">
+            {% for category in categories %}
+            <div class="grid-item text-center">
+                <div class="mb-4 d-inline-block p-4 rounded-circle bg-soft">
+                    <span class="fs-1">{{ category.icon|default:'📦' }}</span>
+                </div>
+                <h4 class="fw-bold mb-2 text-primary">{{ category.name }}</h4>
+                <p class="text-secondary small mb-4 opacity-75">Explore high-quality creator listings in this category.
+                </p>
+                <a href="/products/?category={{ category.id }}"
+                    class="btn btn-link text-primary fw-bold text-decoration-none px-0">Browse All <i
+                        class="fas fa-arrow-right ms-1 x-small"></i></a>
+            </div>
+            {% endfor %}
+            <!-- Become a Seller Block -->
+            <div
+                class="grid-item bg-dark text-white d-flex flex-column align-items-center justify-content-center text-center">
+                <h2 class="display-5 fw-black mb-4">Start your brand <br><span class="text-accent">on Vellon.</span>
+                </h2>
+                <p class="opacity-50 mb-5 px-lg-5">Join the merchant fleet of 500+ creative entrepreneurs.</p>
+                <a href="/stores/create/" class="btn btn-accent btn-master py-3 px-5 rounded-pill shadow-none">Launch
+                    Store Dashboard</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Editor's Picks (Shopify Style Clean) -->
+<section class="py-5 mt-5">
+    <div class="container py-5">
+        <div class="section-header d-flex justify-content-between align-items-end mb-5">
+            <div>
+                <h2 class="display-5 fw-black">Verified Picks <span class="text-indigo">.</span></h2>
+                <p class="text-secondary opacity-75 fw-medium">Hand-picked items for the Vellon community.</p>
+            </div>
+            <a href="/products/" class="fw-bold text-primary text-decoration-none mb-2">Full Marketplace Inventory <i
+                    class="fas fa-arrow-right ms-2 x-small"></i></a>
+        </div>
+
+        <div class="row g-4">
+            {% for product in featured_products %}
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="m-card h-100">
+                    <div class="m-card-img-wrapper">
+                        {% if product.images.all %}
+                        <img src="{{ product.images.first.image.url }}" class="m-card-img" alt="{{ product.name }}">
+                        {% else %}
+                        <div class="w-100 h-100 d-flex align-items-center justify-content-center opacity-10"><i
+                                class="fas fa-image fa-4x"></i></div>
+                        {% endif %}
+                        <div
+                            class="position-absolute top-0 start-0 m-3 px-3 py-1 bg-white text-primary small fw-black border border-dark">
+                            NEW
+                        </div>
+                    </div>
+                    <div class="m-card-body">
+                        <p class="x-small text-secondary mb-1 fw-bold tracking-widest text-uppercase">{{
+                            product.category_name }}</p>
+                        <h6 class="fw-bold mb-3 text-primary">{{ product.name }}</h6>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-black h5 mb-0">₦{{ product.price|floatformat:0 }}</span>
+                            <a href="/products/{{ product.slug }}/" class="text-primary"><i
+                                    class="fas fa-plus-circle fs-4"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Why Vellon Section -->
+<section class="bg-soft border-top border-bottom py-5">
+    <div class="container py-5">
+        <div class="row g-5">
+            <div class="col-lg-4">
+                <div class="d-flex gap-4">
+                    <div class="text-indigo"><i class="fas fa-shield-heart fa-3x"></i></div>
+                    <div>
+                        <h4 class="fw-bold mb-3">Campus Safe</h4>
+                        <p class="text-secondary small fw-medium">Every seller is a verified Vellon creator. Safe meetups
+                            at designated community hubs only.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="d-flex gap-4">
+                    <div class="text-gold"><i class="fas fa-bolt-lightning fa-3x"></i></div>
+                    <div>
+                        <h4 class="fw-bold mb-3">Instant Pickup</h4>
+                        <p class="text-secondary small fw-medium">No logistics headaches. Chat, meet, and pick up your
+                            items within minutes of ordering.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="d-flex gap-4">
+                    <div class="text-vellon"><i class="fas fa-hand-holding-dollar fa-3x"></i></div>
+                    <div>
+                        <h4 class="fw-bold mb-3">Secure Escrow</h4>
+                        <p class="text-secondary small fw-medium">Your funds are protected. We hold payments until you
+                            verify the item in person.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .slide-in-bottom {
+        animation: slideIn 0.8s ease-out;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .text-gradient {
+        background: linear-gradient(to right, white, var(--color-accent));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .bounce {
+        animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+            transform: translateY(0);
+        }
+
+        40% {
+            transform: translateY(-10px);
+        }
+
+        60% {
+            transform: translateY(-5px);
+        }
+    }
+</style>
+{% endblock %}

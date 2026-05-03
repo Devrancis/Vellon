@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load account socialaccount %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% trans "Sign In" %} - Vellon Premium{% endblock %}
+
+{% block content %}
+<div class="section-padding bg-mesh" style="min-height: 90vh;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-8">
+                <div class="card-premium glass p-4 p-md-5 border-white border-2">
+                    <div class="text-center mb-5">
+                        <div class="bg-primary rounded-pill d-inline-block px-4 py-2 mb-4 shadow-sm">
+                            <span class="fs-3 fw-black text-white" style="letter-spacing: -1.5px;">FM</span>
+                        </div>
+                        <h2 class="display-6 fw-black text-primary tracking-tight">Welcome Back</h2>
+                        <p class="text-secondary small fw-medium">Sign in to the official Vellon creator hub</p>
+                    </div>
+
+                    <form class="login" method="POST" action="{% url 'account_login' %}">
+                        {% csrf_token %}
+                        <div class="form-premium mb-4">
+                            {{ form|crispy }}
+                        </div>
+
+                        {% if redirect_field_value %}
+                        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                        {% endif %}
+
+                        <div class="d-grid mt-5">
+                            <button class="btn btn-primary btn-lg rounded-pill py-3 fw-black shadow-heavy"
+                                type="submit">
+                                {% trans "Launch Dashboard" %} <i class="fas fa-rocket ms-2 small"></i>
+                            </button>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <a class="small text-secondary fw-bold text-decoration-none hover-primary"
+                                href="{% url 'account_reset_password' %}">
+                                {% trans "Forgot your security key?" %}
+                            </a>
+                        </div>
+                    </form>
+
+                    <div class="border-top border-white opacity-10 my-5"></div>
+
+                    <div class="text-center">
+                        <p class="mb-0 text-secondary small fw-medium">New verified merchant? <a href="{{ signup_url }}"
+                                class="fw-black text-primary hover-accent text-decoration-none ms-1">Create Account</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

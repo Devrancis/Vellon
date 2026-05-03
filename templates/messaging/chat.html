@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Chat with {% if conversation.buyer == request.user %}{{ conversation.seller.username }}{% else %}{{
+conversation.buyer.username }}{% endif %} - Vellon{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-0" style="margin-top: 90px; height: calc(100vh - 90px);">
+    <div class="row h-100 g-0">
+        <!-- Chat Sidebar: Conversation Context -->
+        <div class="col-lg-3 border-end border-dark bg-soft d-none d-lg-block p-5">
+            <a href="{% url 'inbox' %}" class="btn-master btn-master-outline mb-5 x-small"><i
+                    class="fas fa-arrow-left me-2"></i> All Messages</a>
+
+            <div class="mb-5">
+                <span class="x-small fw-black text-secondary text-uppercase tracking-widest d-block mb-3">Talking
+                    with</span>
+                <div class="d-flex align-items-center mb-4">
+                    <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center fw-black me-3"
+                        style="width: 50px; height: 50px;">
+                        {% if conversation.buyer == request.user %}{{ conversation.seller.username|slice:":1"|upper }}{%
+                        else %}{{ conversation.buyer.username|slice:":1"|upper }}{% endif %}
+                    </div>
+                    <div>
+                        <h6 class="fw-black mb-0 text-primary">{% if conversation.buyer == request.user %}{{
+                            conversation.seller.username }}{% else %}{{ conversation.buyer.username }}{% endif %}</h6>
+                        <p class="x-small fw-bold text-success mb-0">• Online</p>
+                    </div>
+                </div>
+            </div>
+
+            {% if conversation.product %}
+            <div class="grid-container border-dark bg-white">
+                <div class="grid-item p-4">
+                    <span class="x-small fw-black text-secondary text-uppercase tracking-widest d-block mb-2">Inquiry
+                        Item</span>
+                    <h6 class="fw-bold mb-1 small">{{ conversation.product.name }}</h6>
+                    <p class="x-small fw-black mb-3">₦{{ conversation.product.price|floatformat:0 }}</p>
+                    <a href="{% url 'product_detail' conversation.product.slug %}"
+                        class="btn-master btn-master-primary py-2 x-small w-100 justify-content-center">View Product</a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Chat Area -->
+        <div class="col-lg-9 d-flex flex-column h-100 bg-white">
+            <!-- Messages Scroll -->
+            <div class="flex-grow-1 p-4 p-lg-5 overflow-auto" id="message-container">
+                <div class="text-center mb-5">
+                    <span
+                        class="badge bg-soft text-secondary border border-dark rounded-0 px-3 py-1 x-small fw-bold">CONVERSATION
+                        STARTED {{ conversation.created_at|date:"M d, Y" }}</span>
+                </div>
+
+                {% for msg in messages_list %}
+                <div class="mb-4 d-flex {% if msg.sender == request.user %}justify-content-end{% endif %}">
+                    <div style="max-width: 70%;">
+                        <div
+                            class="p-4 border border-dark {% if msg.sender == request.user %}bg-dark text-white{% else %}bg-soft text-primary{% endif %} shadow-none">
+                            <p class="mb-0 fw-medium" style="white-space: pre-wrap;">{{ msg.content }}</p>
+                        </div>
+                        <p
+                            class="x-small fw-bold text-secondary mt-2 mb-0 {% if msg.sender == request.user %}text-end{% endif %}">
+                            {{ msg.created_at|date:"H:i" }}
+                            {% if msg.sender == request.user %}
+                            {% if msg.read %}<i class="fas fa-check-double text-accent ms-1"></i>{% else %}<i
+                                class="fas fa-check ms-1"></i>{% endif %}
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Message Input -->
+            <div class="p-4 p-lg-5 border-top border-dark bg-white">
+                <form method="POST" class="d-flex gap-3">
+                    {% csrf_token %}
+                    <textarea name="content"
+                        class="form-control border-dark border-2 rounded-0 py-3 fw-medium shadow-none"
+                        placeholder="Type your message..." rows="1" required></textarea>
+                    <button type="submit" class="btn-master btn-accent px-5">
+                        <span class="fw-black">SEND</span>
+                    </button>
+                </form>
+                <div class="mt-3 d-flex gap-4">
+                    <button class="btn p-0 text-secondary x-small fw-black hover-primary"><i
+                            class="fas fa-image me-1"></i> Attach Photo</button>
+                    <button class="btn p-0 text-secondary x-small fw-black hover-primary"><i
+                            class="fas fa-map-marker-alt me-1"></i> Send Hub Location</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Scroll to bottom
+    const container = document.getElementById('message-container');
+    container.scrollTop = container.scrollHeight;
+</script>
+{% endblock %}

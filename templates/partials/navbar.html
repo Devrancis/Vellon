@@ -1,0 +1,66 @@
+<nav class="navbar navbar-expand-lg nav-master sticky-top shadow-sm">
+    <div class="container-fluid px-lg-5">
+        <a class="logo-text me-lg-5" href="/">Vellon.</a>
+
+        <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto gap-lg-4">
+                <li class="nav-item"><a class="nav-link fw-semibold text-primary px-0"
+                        href="{% url 'product_list' %}">Marketplace</a></li>
+                <li class="nav-item"><a class="nav-link fw-semibold text-primary px-0"
+                        href="{% url 'inbox' %}">Inbox</a></li>
+                <li class="nav-item"><a class="nav-link fw-semibold text-primary px-0"
+                        href="{% url 'store_list' %}">Sellers Hub</a></li>
+            </ul>
+
+            <div class="d-flex align-items-center gap-4">
+                {% if not user.is_seller %}
+                <a href="/stores/create/"
+                    class="text-secondary fw-bold text-decoration-none small hover-primary d-none d-lg-block">Become a
+                    Seller</a>
+                {% endif %}
+
+                {% include 'partials/notification_bell.html' %}
+
+                <!-- Simple Cart -->
+                <button class="btn btn-link text-primary p-0 position-relative shadow-none" data-bs-toggle="offcanvas"
+                    data-bs-target="#cartSidebar">
+                    <i class="fas fa-shopping-bag fs-5"></i>
+                    <span class="position-absolute translate-middle badge rounded-pill bg-primary text-white"
+                        id="cart-count" style="top: 0; right: -12px; font-size: 0.6rem;">0</span>
+                </button>
+
+                {% if user.is_authenticated %}
+                <div class="dropdown">
+                    <button class="btn btn-link text-primary p-0 dropdown-toggle shadow-none d-flex align-items-center"
+                        type="button" data-bs-toggle="dropdown">
+                        <span class="fw-bold small me-2">{{ user.username }}</span>
+                        <i class="fas fa-chevron-down x-small opacity-50"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 mt-3 p-2 rounded-lg">
+                        <li><a class="dropdown-item py-2 small fw-medium" href="/api/accounts/profile/">Profile
+                                Settings</a></li>
+                        {% if user.is_seller %}
+                        <li><a class="dropdown-item py-2 small fw-medium" href="/api/stores/my-store/">Store
+                                Dashboard</a></li>
+                        {% endif %}
+                        <li>
+                            <hr class="dropdown-divider opacity-10">
+                        </li>
+                        <li><a class="dropdown-item py-2 small fw-bold text-danger" href="/accounts/logout/">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+                {% else %}
+                <a href="/accounts/login/" class="btn-master btn-master-outline py-2 px-4 small">Sign In</a>
+                <a href="/accounts/signup/" class="btn-master btn-master-primary py-2 px-4 shadow-none small">Join
+                    Now</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>

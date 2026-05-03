@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+
+{% block title %}Marketplace Inventory - Vellon.{% endblock %}
+
+{% block content %}
+<div class="bg-dark text-white py-5">
+    <div class="container py-5">
+        <div class="row align-items-end">
+            <div class="col-lg-8">
+                <h1 class="display-3 fw-black mb-3">Marketplace <span class="text-accent">Inventory.</span></h1>
+                <p class="lead opacity-50 fw-medium">The most curated selection of premium items at Vellon.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+                <div class="badge border border-white border-opacity-20 px-4 py-2 rounded-pill fw-bold small mt-3">
+                    <i class="fas fa-check-circle me-1 text-accent"></i> {{ products|length }} Items Available Today
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5 mt-5">
+    <div class="row g-5">
+        <!-- Sidebar Filters -->
+        <div class="col-lg-3">
+            <div class="sticky-top" style="top: 120px;">
+                <form method="GET" action="{% url 'product_list' %}" id="filter-form">
+                    <h6 class="fw-black mb-4 small text-uppercase tracking-widest text-primary">Search</h6>
+                    <div class="mb-5 position-relative">
+                        <input type="text" name="q" value="{{ current_q|default:'' }}"
+                            class="form-control border-dark border-2 rounded-0 py-3 fw-bold"
+                            placeholder="Find items...">
+                        <button type="submit"
+                            class="btn position-absolute top-50 end-0 translate-middle-y me-2 border-0 bg-transparent">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h6 class="fw-black mb-4 small text-uppercase tracking-widest text-primary">Department</h6>
+                    <div class="d-grid gap-3 mb-5">
+                        <a href="{% url 'product_list' %}"
+                            class="text-primary fw-black text-decoration-none {% if not current_cat %}border-start border-primary border-4 ps-3{% else %}opacity-50 ps-3{% endif %} py-1">All
+                            Collections</a>
+                        {% for cat in categories %}
+                        <a href="?category={{ cat.id }}{% if current_q %}&q={{ current_q }}{% endif %}"
+                            class="text-secondary fw-bold text-decoration-none ps-3 {% if current_cat == cat.id %}border-start border-primary border-4 text-primary opacity-100{% else %}opacity-50 hover-opacity-100 hover-border-start{% endif %} transition-all">
+                            {{ cat.name }}
+                        </a>
+                        {% endfor %}
+                    </div>
+
+                    <h6 class="fw-black mb-4 small text-uppercase tracking-widest text-primary">Sort By</h6>
+                    <select name="sort" class="form-select border-dark border-2 rounded-0 py-3 fw-bold mb-5"
+                        onchange="this.form.submit()">
+                        <option value="newest" {% if current_sort == 'newest' %}selected{% endif %}>Newest Arrivals
+                        </option>
+                        <option value="price_asc" {% if current_sort == 'price_asc' %}selected{% endif %}>Price: Low to
+                            High</option>
+                        <option value="price_desc" {% if current_sort == 'price_desc' %}selected{% endif %}>Price: High to
+                            Low</option>
+                    </select>
+
+                    <div class="bg-soft p-5 border border-dark rounded-0 text-center">
+                        <i class="fas fa-rocket fa-2x mb-3"></i>
+                        <h6 class="fw-bold mb-3">Merchant Mode</h6>
+                        <p class="x-small text-secondary mb-4 px-2">Ready to list your own creator inventory?</p>
+                        <a href="{% url 'store_create' %}"
+                            class="btn-master btn-master-primary w-100 justify-content-center py-2">Open Shop</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div class="col-lg-9">
+            <div class="row g-0 grid-container">
+                {% for product in products %}
+                <div class="col-lg-4 col-md-6 grid-item p-0">
+                    <div class="m-card border-0 h-100">
+                        <div class="m-card-img-wrapper">
+                            {% if product.images.all %}
+                            <img src="{{ product.images.first.image.url }}" class="m-card-img" alt="{{ product.name }}">
+                            {% else %}
+                            <div
+                                class="w-100 h-100 bg-soft d-flex align-items-center justify-content-center opacity-10">
+                                <i class="fas fa-image fa-3x"></i>
+                            </div>
+                            {% endif %}
+                            <div
+                                class="position-absolute bottom-0 start-0 m-3 px-3 py-1 bg-white text-dark small fw-black border border-dark shadow-sm">
+                                ₦{{ product.price|floatformat:0 }}
+                            </div>
+                        </div>
+                        <div class="m-card-body">
+                            <p class="x-small text-secondary mb-1 fw-bold tracking-widest text-uppercase opacity-50">{{
+                                product.category.name }}</p>
+                            <h6 class="fw-bold mb-4 text-primary"
+                                style="min-height: 44px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                                {{ product.name }}</h6>
+
+                            <div class="d-grid gap-2">
+                                <a href="{% url 'product_detail' product.slug %}"
+                                    class="btn-master btn-master-outline py-2 justify-content-center x-small">View
+                                    Specifications</a>
+                                <button
+                                    onclick="Cart.add({id: {{ product.id }}, name: '{{ product.name|escapejs }}', price: {{ product.price }}})"
+                                    class="btn-master btn-master-primary py-2 justify-content-center x-small">Add to
+                                    Bag</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12 py-5 text-center opacity-20">
+                    <i class="fas fa-search fa-4x mb-4"></i>
+                    <h4 class="fw-black">No listings found.</h4>
+                    <p>Try clearing your filters or exploring a different category.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

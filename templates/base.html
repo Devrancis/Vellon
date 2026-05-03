@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Vellon. - Campus Marketplace 2.0{% endblock %}</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/variables.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'css/components.css' %}">
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body>
+    {% include 'partials/navbar.html' %}
+
+    <!-- Mini Cart Sidebar (Masterpiece Version) -->
+    <div class="offcanvas offcanvas-end border-start border-dark" tabindex="-1" id="cartSidebar" style="width: 450px;">
+        <div class="offcanvas-header bg-dark text-white py-4 d-flex align-items-center">
+            <h5 class="offcanvas-title fw-black tracking-tight mb-0" id="cartSidebarLabel">Your Shopping Bag.</h5>
+            <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column p-4">
+            <div id="cart-items" class="flex-grow-1 overflow-auto pe-2">
+                <!-- Cart items will be injected here -->
+                <div class="text-center py-5 opacity-20">
+                    <i class="fas fa-shopping-basket fa-4x mb-3"></i>
+                    <p class="fw-bold h5">No items found.</p>
+                </div>
+            </div>
+            <div class="pt-5 border-top border-dark">
+                <div class="d-flex justify-content-between mb-4">
+                    <span class="text-secondary fw-bold small text-uppercase tracking-widest">Estimated Total</span>
+                    <span id="cart-total" class="h3 fw-black text-primary mb-0">₦0</span>
+                </div>
+                <div class="d-grid gap-3">
+                    <a href="/orders/checkout/"
+                        class="btn-master btn-master-primary justify-content-center py-3">Continue to Secure
+                        Checkout</a>
+                    <button class="btn btn-link text-secondary text-decoration-none fw-bold small"
+                        data-bs-dismiss="offcanvas">Back to Shopping</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if messages %}
+    <div class="toast-container position-fixed bottom-0 end-0 p-4" style="z-index: 1100;">
+        {% for message in messages %}
+        <div class="toast show bg-white border border-dark rounded-0 shadow-lg mb-3" role="alert">
+            <div class="toast-header bg-dark text-white border-0 py-2">
+                <strong class="me-auto small fw-bold tracking-tight"><i class="fas fa-bell me-2"></i> {{
+                    message.tags|upper }}</strong>
+                <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body py-3 fw-bold small">
+                {{ message }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <main class="main-content" style="margin-top: 90px;">
+        {% block content %}{% endblock %}
+    </main>
+
+    {% include 'partials/footer.html' %}
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script src="{% static 'js/cart.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+
+</html>

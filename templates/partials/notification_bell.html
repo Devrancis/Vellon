@@ -1,0 +1,50 @@
+<div class="dropdown me-2">
+    <button class="btn btn-link text-primary p-0 position-relative shadow-none dropdown-toggle no-caret" type="button"
+        data-bs-toggle="dropdown" id="notificationBell">
+        <i class="far fa-bell fs-5"></i>
+        <span class="position-absolute translate-middle badge rounded-pill bg-accent text-dark d-none"
+            id="notification-unread-count" style="top: 0; right: -12px; font-size: 0.6rem;">0</span>
+    </button>
+    <div class="dropdown-menu dropdown-menu-end shadow-lg border-0 mt-3 p-0 rounded-lg overflow-hidden"
+        style="width: 320px;">
+        <div class="p-3 bg-soft border-bottom border-dark">
+            <h6 class="fw-black mb-0 small text-uppercase tracking-widest">Alerts Hub</h6>
+        </div>
+        <div id="notification-items" class="overflow-auto" style="max-height: 400px;">
+            <div class="p-4 text-center opacity-50">
+                <p class="small fw-bold mb-0">No new alerts.</p>
+            </div>
+        </div>
+        <div class="p-2 border-top border-dark text-center">
+            <a href="{% url 'notification_list' %}"
+                class="x-small fw-black text-secondary text-decoration-none hover-primary">View All History</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function updateNotifications() {
+        fetch("{% url 'api_unread_notifications' %}")
+            .then(res => res.json())
+            .then(data => {
+                const countBadge = document.getElementById('notification-unread-count');
+                const container = document.getElementById('notification-items');
+
+                if (data.notifications.length > 0) {
+                    countBadge.innerText = data.notifications.length;
+                    countBadge.classList.remove('d-none');
+
+                    container.innerHTML = data.notifications.map(n => `
+                        <a href="${n.link || '#'}" class="dropdown-item p-3 border-bottom border-soft hover-soft text-wrap">
+                            <h6 class="fw-black mb-1 small text-primary">${n.title}</h6>
+                            <p class="x-small mb-0 opacity-50 fw-medium">${n.description}</p>
+                        </a>
+                    `).join('');
+                }
+            });
+    }
+
+    // Check every 30 seconds
+    setInterval(updateNotifications, 30000);
+    updateNotifications();
+</script>

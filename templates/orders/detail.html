@@ -1,0 +1,194 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Order #{{ order.order_number }} - Vellon.{% endblock %}
+
+{% block content %}
+<div class="bg-soft border-bottom border-dark py-5">
+    <div class="container py-5">
+        <div class="d-flex justify-content-between align-items-end">
+            <div>
+                <span class="x-small fw-black text-secondary text-uppercase tracking-widest d-block mb-3">Campus
+                    Exchange Details</span>
+                <h1 class="display-4 fw-black text-primary mb-2">Order Tracking <span class="text-indigo">.</span></h1>
+                <p class="lead opacity-40 fw-medium">Status: {{ order.get_status_display }}</p>
+            </div>
+            <div class="text-end">
+                <h6 class="fw-black mb-1">₦{{ order.total_amount|floatformat:0 }}</h6>
+                <p class="x-small fw-bold text-secondary mb-0">ID: {{ order.order_number }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container py-5 mt-5 mb-5">
+    <div class="row g-5">
+        <!-- Status Timeline -->
+        <div class="col-lg-7">
+            <div class="grid-container border-dark bg-white">
+                <div class="grid-item">
+                    <h5 class="fw-black mb-5">Exchange Timeline</h5>
+                    <div class="timeline-master">
+                        <div
+                            class="tl-item {% if order.status != 'cancelled' and order.status != 'rejected' %}active{% endif %}">
+                            <div class="tl-dot"></div>
+                            <div class="tl-content">
+                                <h6 class="fw-black mb-1">Order Placed</h6>
+                                <p class="small opacity-50">{{ order.created_at|date:"M d, Y | H:i" }}</p>
+                            </div>
+                        </div>
+                        <div class="tl-item {% if order.seller_accepted_at %}active{% endif %}">
+                            <div class="tl-dot"></div>
+                            <div class="tl-content">
+                                <h6 class="fw-black mb-1">Merchant Acceptance</h6>
+                                <p class="small opacity-50">{% if order.seller_accepted_at %}Accepted on {{
+                                    order.seller_accepted_at|date:"M d" }}{% else %}Waiting for seller...{% endif %}</p>
+                            </div>
+                        </div>
+                        <div
+                            class="tl-item {% if order.status == 'delivered' or order.status == 'completed' %}active{% endif %}">
+                            <div class="tl-dot"></div>
+                            <div class="tl-content">
+                                <h6 class="fw-black mb-1">Center Arrival</h6>
+                                <p class="small opacity-50">Transfer to community hub.</p>
+                            </div>
+                        </div>
+                        <div class="tl-item {% if order.status == 'completed' %}active{% endif %}">
+                            <div class="tl-dot"></div>
+                            <div class="tl-content">
+                                <h6 class="fw-black mb-1">Completed</h6>
+                                <p class="small opacity-50">Handover confirmed.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-item">
+                    <h5 class="fw-black mb-4">Items Summary</h5>
+                    {% for item in order.items.all %}
+                    <div class="d-flex justify-content-between align-items-center mb-4 pb-4 border-bottom border-soft">
+                        <div class="d-flex gap-4 align-items-center">
+                            <div class="bg-soft border border-dark d-flex align-items-center justify-content-center"
+                                style="width: 60px; height: 60px;">
+                                <i class="fas fa-box opacity-10"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">{{ item.product.name }}</h6>
+                                <p class="x-small fw-bold text-secondary mb-0">Quantity: {{ item.quantity }}</p>
+                            </div>
+                        </div>
+                        <p class="fw-black mb-0">₦{{ item.price_at_purchase|floatformat:0 }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Actions -->
+        <div class="col-lg-5">
+            <div class="grid-container border-dark bg-white">
+                <div class="grid-item">
+                    <h5 class="fw-black mb-4">Merchant Hub</h5>
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="bg-dark text-white rounded-circle d-flex align-items-center justify-content-center fw-black me-3"
+                            style="width: 50px; height: 50px;">
+                            {{ order.store.name|slice:":1"|upper }}
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-0 text-primary">{{ order.store.name }}</h6>
+                            <a href="/stores/{{ order.store.slug }}/"
+                                class="x-small fw-bold text-indigo text-decoration-none">View Store Portal</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid-item">
+                    <h5 class="fw-black mb-4">Pickup Instructions</h5>
+                    <p class="small fw-medium opacity-75 mb-4">Your order will be delivered to:</p>
+                    <div class="bg-soft p-4 border border-dark rounded-0 mb-4">
+                        <h6 class="fw-black mb-1">{{ order.delivery_address }}</h6>
+                        <p class="x-small fw-bold text-secondary mb-0">Delivery Hub Terminal</p>
+                    </div>
+
+                    {% if order.status == 'delivered' and order.buyer == request.user %}
+                    <button class="btn-master btn-master-primary w-100 justify-content-center py-3">Confirm Pickup &
+                        Complete Order</button>
+                    {% elif order.status == 'pending' and order.store.owner == request.user %}
+                    <div class="d-grid gap-3">
+                        <a href="{% url 'update_order_status' order.pk 'accepted' %}"
+                            class="btn-master btn-success text-white w-100 justify-content-center py-3">Accept Order</a>
+                        <a href="{% url 'update_order_status' order.pk 'rejected' %}"
+                            class="btn-master btn-danger text-white w-100 justify-content-center py-3">Reject Order</a>
+                    </div>
+                    {% elif order.status == 'accepted' and order.store.owner == request.user %}
+                    <a href="{% url 'update_order_status' order.pk 'in_transit' %}"
+                        class="btn-master btn-master-primary w-100 justify-content-center py-3">Mark as Dispatched</a>
+                    {% elif order.status == 'pending' or order.status == 'accepted' %}
+                    <div class="alert alert-soft mb-0 border border-dark rounded-0">
+                        <p class="x-small fw-bold text-secondary mb-0"><i class="fas fa-info-circle me-2"></i> Only
+                            confirm once you have the item in your hands at the hub.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="mt-5 d-grid gap-3">
+                <a href="https://wa.me/{{ order.store.whatsapp }}"
+                    class="btn-master btn-master-outline w-100 justify-content-center py-3">Chat with Merchant on
+                    WhatsApp</a>
+                <button class="btn btn-link text-danger fw-bold small text-decoration-none shadow-none">Report a
+                    Problem</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .timeline-master {
+        position: relative;
+        padding-left: 30px;
+    }
+
+    .timeline-master::before {
+        content: '';
+        position: absolute;
+        left: 7px;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: rgba(15, 23, 42, 0.1);
+    }
+
+    .tl-item {
+        position: relative;
+        margin-bottom: 40px;
+    }
+
+    .tl-dot {
+        position: absolute;
+        left: -30px;
+        top: 4px;
+        width: 16px;
+        height: 16px;
+        background: white;
+        border: 2px solid rgba(15, 23, 42, 0.1);
+        border-radius: 50%;
+        z-index: 1;
+    }
+
+    .tl-item.active .tl-dot {
+        background: var(--color-secondary);
+        border-color: var(--color-secondary);
+        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.2);
+    }
+
+    .tl-item.active .tl-content h6 {
+        color: var(--color-primary);
+    }
+
+    .tl-content h6 {
+        color: rgba(15, 23, 42, 0.3);
+        transition: color 0.3s;
+    }
+</style>
+{% endblock %}
