@@ -13,6 +13,4 @@ class User(AbstractUser):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def clean(self):
-        # Must use @futa.edu.ng email
-        if self.email and not self.email.endswith('@futa.edu.ng'):
-            raise ValidationError('Must use Vellon email')
+        super().clean()

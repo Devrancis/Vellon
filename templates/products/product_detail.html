@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static l10n %}
 
 {% block title %}{{ product.name }} Detail - Vellon.{% endblock %}
 
@@ -35,18 +35,20 @@
         <!-- Buy Interaction -->
         <div class="col-lg-5 ps-lg-5">
             <div class="mb-5 pb-5 border-bottom border-dark">
-                <p class="fw-black text-secondary x-small text-uppercase tracking-widest mb-3">{{ product.category_name
-                    }} <i class="fas fa-chevron-right mx-2 x-small"></i> FM-{{ product.id }}</p>
+                <p class="fw-black text-secondary x-small text-uppercase tracking-widest mb-3">{{ product.category.name|default:"General" }} <i class="fas fa-chevron-right mx-2 x-small"></i> V-{{ product.id|unlocalize }}</p>
                 <h1 class="display-4 fw-black text-primary mb-4">{{ product.name }}</h1>
 
                 <div class="d-flex align-items-baseline gap-3 mb-5">
                     <span class="display-5 fw-black text-primary">₦{{ product.price|floatformat:0 }}</span>
-                    <span class="text-secondary opacity-50 fw-bold small">Direct Campus Pickup</span>
+                    <span class="text-secondary opacity-50 fw-bold small">Direct Pickup</span>
                 </div>
 
                 <div class="d-grid gap-3 mb-5">
                     <button class="btn-master btn-master-primary py-4 justify-content-center h4 mb-0"
-                        onclick="Cart.add({id: {{ product.id }}, name: '{{ product.name }}', price: {{ product.price }}})">
+                        data-product-id="{{ product.id|unlocalize }}"
+                        data-product-name="{{ product.name }}"
+                        data-product-price="{{ product.price|unlocalize }}"
+                        onclick="Cart.addFromElement(this)">
                         Add to Shopping Bag <i class="fas fa-shopping-bag ms-3"></i>
                     </button>
                     <a href="{% url 'start_conversation' product.id %}"
@@ -65,7 +67,7 @@
                         {{ product.store.name|slice:":1"|upper }}
                     </div>
                     <div>
-                        <h5 class="fw-black mb-1">{{ product.store_name }}</h5>
+                        <h5 class="fw-black mb-1">{{ product.store.name }}</h5>
                         <p class="mb-0 x-small fw-bold text-success text-uppercase tracking-widest"><i
                                 class="fas fa-check-circle me-1"></i> Vellon Verified Merchant</p>
                     </div>

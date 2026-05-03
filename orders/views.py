@@ -47,7 +47,7 @@ def checkout_view(request):
                     delivery_fee=0,  # Vellon hub transfers are free for now
                     platform_fee=0,
                     total_amount=subtotal,
-                    delivery_address=request.POST.get('hub', 'SUB Hub'),
+                    delivery_address=request.POST.get('hub', 'Vellon Central Hub'),
                     delivery_location="On-Pickup Point",
                     delivery_method="Hub Pickup",
                     buyer_phone=request.user.phone_number or "0000000000"
@@ -83,7 +83,7 @@ def order_detail_view(request, pk):
         # Check if user is the store owner
         if not (request.user.is_seller and order.store.owner == request.user):
             messages.error(request, "You do not have permission to view this order.")
-            return redirect('index')
+            return redirect('home')
             
     return render(request, 'orders/detail.html', {'order': order})
 
@@ -94,7 +94,7 @@ def update_order_status(request, pk, status):
     # Check if user owns the store
     if order.store.owner != request.user:
         messages.error(request, "Unauthorized.")
-        return redirect('index')
+        return redirect('home')
     
     valid_statuses = ['accepted', 'preparing', 'in_transit', 'delivered', 'rejected', 'cancelled']
     if status in valid_statuses:

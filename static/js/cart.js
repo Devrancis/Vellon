@@ -14,6 +14,15 @@ const Cart = {
         this.showToast(`${product.name} added to cart!`);
     },
 
+    addFromElement(el) {
+        const product = {
+            id: parseInt(el.dataset.productId),
+            name: el.dataset.productName,
+            price: parseFloat(el.dataset.productPrice)
+        };
+        this.add(product);
+    },
+
     remove(id) {
         this.items = this.items.filter(item => item.id !== id);
         this.save();

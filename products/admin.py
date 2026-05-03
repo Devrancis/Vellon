@@ -15,5 +15,5 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ('name', 'store', 'price', 'quantity_available', 'is_active')
     list_filter = ('is_active', 'condition', 'category')
     search_fields = ('name', 'description')
-    inline = [ProductImageInline]
+    inlines = [ProductImageInline]
     prepopulated_fields = {'slug': ('name',)}

@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load l10n %}
 
 {% block title %}Marketplace Inventory - Vellon.{% endblock %}
 
@@ -95,7 +96,7 @@
                             <p class="x-small text-secondary mb-1 fw-bold tracking-widest text-uppercase opacity-50">{{
                                 product.category.name }}</p>
                             <h6 class="fw-bold mb-4 text-primary"
-                                style="min-height: 44px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">
+                                style="min-height: 44px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-clamp: 2;">
                                 {{ product.name }}</h6>
 
                             <div class="d-grid gap-2">
@@ -103,7 +104,10 @@
                                     class="btn-master btn-master-outline py-2 justify-content-center x-small">View
                                     Specifications</a>
                                 <button
-                                    onclick="Cart.add({id: {{ product.id }}, name: '{{ product.name|escapejs }}', price: {{ product.price }}})"
+                                    data-product-id="{{ product.id|unlocalize }}"
+                                    data-product-name="{{ product.name }}"
+                                    data-product-price="{{ product.price|unlocalize }}"
+                                    onclick="Cart.addFromElement(this)"
                                     class="btn-master btn-master-primary py-2 justify-content-center x-small">Add to
                                     Bag</button>
                             </div>
