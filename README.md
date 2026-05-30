@@ -1,6 +1,4 @@
 <div align="center">
-  <img src="static/images/branding/banner.png" alt="Vellon Banner" width="100%">
-  
   # VELLON
   ### The Premium Multi-Vendor Marketplace Solution
   
