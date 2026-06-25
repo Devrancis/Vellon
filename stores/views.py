@@ -5,7 +5,7 @@ from orders.models import Order
 from rest_framework import generics, permissions
 from .models import Store
 from .serializers import StoreSerializer, StoreCreateSerializer
-from .forms import StoreForm
+from .forms import StoreForm, StoreCreateForm
 
 class StoreListView(generics.ListAPIView):
     queryset = Store.objects.filter(is_active=True, verification_status='approved')
@@ -64,3 +64,34 @@ def store_settings_view(request):
         form = StoreForm(instance=store)
     
     return render(request, 'stores/store_form.html', {'form': form, 'store': store})
+
+@login_required
+def store_create_html_view(request):
+    try:
+        # If the user already has a store, redirect to dashboard
+        store = Store.objects.get(owner=request.user)
+        return redirect('seller_dashboard')
+    except Store.DoesNotExist:
+        pass
+
+    if request.method == 'POST':
+        form = StoreCreateForm(request.POST, request.FILES)
+        if form.is_valid():
+            store = form.save(commit=False)
+            store.owner = request.user
+            if not store.slug:
+                from django.utils.text import slugify
+                store.slug = slugify(store.name)
+            store.save()
+            
+            # Set user as seller
+            request.user.is_seller = True
+            request.user.save()
+            
+            messages.success(request, "Your store has been created successfully! Welcome to the merchant fleet.")
+            return redirect('seller_dashboard')
+    else:
+        form = StoreCreateForm()
+        
+    return render(request, 'stores/store_form.html', {'form': form, 'title': 'Create Your Store'})
+

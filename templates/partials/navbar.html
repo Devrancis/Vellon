@@ -19,7 +19,7 @@
 
             <div class="d-flex align-items-center gap-4">
                 {% if not user.is_seller %}
-                <a href="/stores/create/"
+                <a href="{% url 'store_create' %}"
                     class="text-secondary fw-bold text-decoration-none small hover-primary d-none d-lg-block">Become a
                     Seller</a>
                 {% endif %}
@@ -42,12 +42,13 @@
                         <i class="fas fa-chevron-down x-small opacity-50"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 mt-3 p-2 rounded-lg">
-                        <li><a class="dropdown-item py-2 small fw-medium" href="/api/accounts/profile/">Profile
+                        <li><a class="dropdown-item py-2 small fw-medium" href="{% url 'profile_settings' %}">Profile
                                 Settings</a></li>
                         {% if user.is_seller %}
-                        <li><a class="dropdown-item py-2 small fw-medium" href="/api/stores/my-store/">Store
+                        <li><a class="dropdown-item py-2 small fw-medium" href="{% url 'seller_dashboard' %}">Store
                                 Dashboard</a></li>
                         {% endif %}
+
                         <li>
                             <hr class="dropdown-divider opacity-10">
                         </li>

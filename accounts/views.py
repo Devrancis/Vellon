@@ -13,3 +13,11 @@ class ProfileView(generics.RetrieveUpdateAPIView):
         if self.request.method in ['PUT', 'PATCH']:
             return UserUpdateSerializer
         return UserSerializer
+
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+
+@login_required
+def profile_html_view(request):
+    return render(request, 'account/profile.html')
+

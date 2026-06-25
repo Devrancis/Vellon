@@ -21,8 +21,7 @@
 
                     <p class="text-center small mb-5 fw-medium text-secondary">
                         {% blocktrans %}Already a member? <a href="{{ login_url }}"
-                            class="fw-black text-primary hover-accent text-decoration-none">Sign in here</a>.{%
-                        endblocktrans %}
+                            class="fw-black text-primary hover-accent text-decoration-none">Sign in here</a>.{% endblocktrans %}
                     </p>
 
                     <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">

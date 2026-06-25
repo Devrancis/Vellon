@@ -24,13 +24,14 @@
                     <a href="#" class="btn-master btn-master-outline justify-content-start py-3 mb-2"><i
                             class="fas fa-shield-alt me-3"></i> Security</a>
                     {% if user.is_seller %}
-                    <a href="/api/stores/my-store/"
+                    <a href="{% url 'seller_dashboard' %}"
                         class="btn-master btn-master-outline justify-content-start py-3 text-indigo border-indigo-opacity"><i
                             class="fas fa-store me-3"></i> Seller Dashboard</a>
                     {% else %}
-                    <a href="/stores/create/" class="btn-master btn-accent justify-content-start py-3 mt-4">Become a
+                    <a href="{% url 'store_create' %}" class="btn-master btn-accent justify-content-start py-3 mt-4">Become a
                         Merchant</a>
                     {% endif %}
+
                 </div>
             </div>
         </div>

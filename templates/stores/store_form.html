@@ -1,13 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Store Settings - {{ store.name }}{% endblock %}
+{% block title %}{% if store %}Store Settings - {{ store.name }}{% else %}Join the Merchant Fleet{% endif %} - Vellon{% endblock %}
 
 {% block content %}
 <div class="bg-soft border-bottom border-dark py-5">
     <div class="container py-5">
-        <h1 class="display-4 fw-black text-primary mb-2">Store Settings <span class="text-indigo">.</span></h1>
-        <p class="lead opacity-50 fw-medium">Refine your merchant brand and contact channels.</p>
+        <h1 class="display-4 fw-black text-primary mb-2">{% if store %}Store Settings{% else %}Create Your Store{% endif %} <span class="text-indigo">.</span></h1>
+        <p class="lead opacity-50 fw-medium">{% if store %}Refine your merchant brand and contact channels.{% else %}Set up your community brand and apply for verification.{% endif %}</p>
     </div>
 </div>
 
@@ -31,20 +31,37 @@
                                     class="x-small fw-black text-uppercase tracking-widest opacity-50 d-block mb-2">Description</label>
                                 {{ form.description }}
                             </div>
+                            {% if form.slug %}
+                            <div class="col-md-12">
+                                <label
+                                    class="x-small fw-black text-uppercase tracking-widest opacity-50 d-block mb-2">Store URL Slug</label>
+                                {{ form.slug }}
+                                <div class="x-small text-muted mt-1 mb-3">This will be your store's unique web address (e.g. stores/my-slug)</div>
+                            </div>
+                            {% endif %}
+                            
                             <div class="col-md-6">
                                 <label
-                                    class="x-small fw-black text-uppercase tracking-widest opacity-50 d-block mb-2">Store
-                                    Logo</label>
+                                    class="x-small fw-black text-uppercase tracking-widest opacity-50 d-block mb-2">Store Logo</label>
                                 {{ form.logo }}
                             </div>
                             <div class="col-md-6">
                                 <label
-                                    class="x-small fw-black text-uppercase tracking-widest opacity-50 d-block mb-2">Store
-                                    Banner</label>
+                                    class="x-small fw-black text-uppercase tracking-widest opacity-50 d-block mb-2">Store Banner</label>
                                 {{ form.banner }}
                             </div>
+
+                            {% if form.matric_card %}
+                            <div class="col-md-12 mt-3">
+                                <label
+                                    class="x-small fw-black text-uppercase tracking-widest opacity-50 d-block mb-2">Matric Card (Verification ID)</label>
+                                {{ form.matric_card }}
+                                <div class="x-small text-muted mt-1">Upload a clear photo/scan of your matriculation card for community verification.</div>
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
+
 
                     <div class="grid-item">
                         <h5 class="fw-black mb-4">Contact & Support</h5>
@@ -70,15 +87,18 @@
                 <div class="bg-dark text-white p-5 border border-dark sticky-top" style="top: 120px;">
                     <h6 class="fw-black mb-4 small text-uppercase tracking-widest text-accent">Admin Actions</h6>
 
-                    <p class="small opacity-50 mb-5">Keep your contact information updated to ensure buyers can reach
-                        you easily at community hubs.</p>
+                    <p class="small opacity-50 mb-5">{% if store %}Keep your contact information updated to ensure buyers can reach you easily.{% else %}Submit your application details. Once approved, you can start selling on the marketplace.{% endif %}</p>
 
                     <button type="submit"
-                        class="btn-master btn-accent w-100 justify-content-center py-3 h5 mb-3 shadow-none">Save Store
-                        Config</button>
+                        class="btn-master btn-accent w-100 justify-content-center py-3 h5 mb-3 shadow-none">{% if store %}Save Store Config{% else %}Launch My Store{% endif %}</button>
+                    {% if store %}
                     <a href="{% url 'seller_dashboard' %}"
                         class="btn-master btn-master-outline w-100 justify-content-center py-3 text-white border-white border-opacity-20 shadow-none">Back
                         to Hub</a>
+                    {% else %}
+                    <a href="/"
+                        class="btn-master btn-master-outline w-100 justify-content-center py-3 text-white border-white border-opacity-20 shadow-none">Cancel</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
